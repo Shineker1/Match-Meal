@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match & Meal - Функции</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="features.css"> 
+    
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="home.html" class="logo"> <i class="bx bx-dish"></i> Match & Meal </a>
+            
+            <div class="nav-links" id="nav-links">
+                <a href="features.html" class="active-link">Функции</a>
+                <a href="about.html">За нас</a>
+                <button id="theme-toggle" class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+                <a href="login.html" class="btn-primary">Вход</a>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="features-hero">
+        <div class="floating-icon icon-1"><i class="fa-solid fa-leaf"></i></div>
+        <div class="floating-icon icon-2"><i class="fa-solid fa-utensils"></i></div>
+        
+        <div class="container fade-in-up">
+            <h1>Всичко необходимо за <br> <span class="highlight">умно готвене</span></h1>
+            <p class="subtitle">Мощни функции, създадени да направят готвенето по-лесно, по-ефективно и по-забавно.</p>
+        </div>
+    </header>
+
+    <section class="feature-row">
+        <div class="container feature-container scroll-anim">
+            <div class="feature-text">
+                <div class="feature-icon-header">
+                    <i class="fa-solid fa-magnifying-glass pulse-anim"></i>
+                    <h2>Интелигентно съвпадение</h2>
+                </div>
+                <p>Нашият интелигентен алгоритъм анализира наличните ти продукти и намира най-добрите рецепти. Край на изхвърлянето на храна и чуденето какво да сготвиш.</p>
+                <ul class="feature-list">
+                    <li><i class="fa-solid fa-wand-magic-sparkles"></i> Класиране на рецепти в реално време</li>
+                    <li><i class="fa-solid fa-wand-magic-sparkles"></i> База данни с над 500 често срещани продукта</li>
+                    <li><i class="fa-solid fa-wand-magic-sparkles"></i> Виж какво имаш и какво ти липсва за рецептата</li>
+                </ul>
+            </div>
+            <div class="feature-visual">
+                <div class="mockup-card floating-mockup">
+                    <div class="tags-cloud">
+                        <span class="tag filled">пиле</span>
+                        <span class="tag filled">чесън</span>
+                        <span class="tag filled">домати</span>
+                        <span class="tag filled">паста</span>
+                        <span class="tag filled">босилек</span>
+                    </div>
+                    <div class="mockup-subtext">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary-green);"></i> Открити 12 рецепти с твоите продукти
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-row reverse">
+        <div class="container feature-container scroll-anim">
+            <div class="feature-text">
+                <div class="feature-icon-header">
+                    <i class="fa-solid fa-filter pulse-anim"></i>
+                    <h2>Диетични предпочитания</h2>
+                </div>
+                <p>Персонализирай търсенето на рецепти въз основа на твоите диетични нужди и предпочитания. Поддържаме всички основни хранителни режими.</p>
+                
+                <div class="dietary-tags-display">
+                    <span class="d-tag">Веган</span>
+                    <span class="d-tag highlighted">Вегетарианско</span>
+                    <span class="d-tag">Без глутен</span>
+                    <span class="d-tag highlighted">Високо протеиново</span>
+                </div>
+                <div class="dietary-tags-display" style="margin-top: 10px;">
+                    <span class="d-tag">Нисковъглехидратно</span>
+                    <span class="d-tag">Кето</span>
+                </div>
+            </div>
+            <div class="feature-visual">
+                <div class="mockup-card floating-mockup" style="animation-delay: 1s;">
+                    <h4 class="mockup-title">Твоите предпочитания</h4>
+                    <div class="toggle-row highlighted">
+                        <span>Вегетарианско</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="toggle-row highlighted">
+                        <span>Високо протеиново</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-row">
+        <div class="container feature-container scroll-anim">
+            <div class="feature-text">
+                <div class="feature-icon-header">
+                    <i class="fa-regular fa-heart pulse-anim"></i>
+                    <h2>Запази любимите си</h2>
+                </div>
+                <p>Изгради личната си колекция от рецепти с един клик. Достъпвай любимите си ястия по всяко време и навсякъде, за да не губиш перфектната рецепта.</p>
+                <ul class="feature-list simple">
+                    <li><i class="fa-regular fa-bookmark"></i> Неограничено запазване на рецепти</li>
+                    <li><i class="fa-regular fa-bookmark"></i> Синхронизиране на всички твои устройства</li>
+                    <li><i class="fa-regular fa-bookmark"></i> Организирай и търси в колекцията си</li>
+                </ul>
+            </div>
+            <div class="feature-visual">
+                <div class="mockup-card recipe-mockup floating-mockup" style="animation-delay: 2s;">
+                    <div class="recipe-content">
+                        <h4>Средиземноморска салата с нахут</h4>
+                        <div class="meta">
+                            <span><i class="fa-regular fa-clock"></i> 15 мин</span>
+                            <span><i class="fa-solid fa-user-group"></i> 4 порции</span>
+                        </div>
+                    </div>
+                    <div class="recipe-heart">
+                        <i class="fa-solid fa-heart" style="color: #ff4757;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="more-features">
+        <div class="container">
+            <h2 class="centered-title scroll-anim">И още много други</h2>
+            <div class="features-grid-4">
+                <div class="small-feature-card scroll-anim" style="transition-delay: 0.1s;">
+                    <div class="icon-header">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3>Хранителна информация</h3>
+                    <p>Подробни хранителни факти за всяка рецепта, включително калории, протеини, въглехидрати и мазнини.</p>
+                </div>
+                <div class="small-feature-card scroll-anim" style="transition-delay: 0.2s;">
+                    <div class="icon-header">
+                        <i class="fa-solid fa-circle-check"></i></div>
+                    <h3>Стъпка по стъпка</h3>
+                    <p>Ясни и лесни за следване инструкции за готвене на рецепти за всяко ниво на умения.</p>
+                </div>
+                <div class="small-feature-card scroll-anim" style="transition-delay: 0.3s;">
+                    <div class="icon-header">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3>Бързи филтри</h3>
+                    <p>Филтрирай по време за приготвяне, порции и диетични нужди, за да намериш точно това, което искаш.</p>
+                </div>
+                <div class="small-feature-card scroll-anim" style="transition-delay: 0.4s;">
+                    <div class="icon-header">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3>Сигурно и поверително</h3>
+                    <p>Твоите данни са криптирани и защитени. Никога не споделяме личната ти информация.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-cta scroll-anim">
+        <div class="container cta-box">
+            <h2>Започни да откриваш невероятни рецепти още днес</h2>
+            <p>Присъедини се към хиляди щастливи домашни готвачи, които никога не остават без идеи за ястия.</p>
+            <div class="hero-buttons">
+                <a href="login.html" class="btn-primary large">Започни безплатно &nbsp; <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="home.html" class="btn-secondary large cta-secondary">Назад към Начало</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-grid scroll-anim">
+            <div class="footer-col brand-col">
+                <div class="logo footer-logo">
+                    <i class="bx bx-dish"></i> Match & Meal
+                </div>
+                <p>Открий рецепти с продуктите, които вече имаш.</p>
+                
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                </div>
+                
+            </div>
+            <div class="footer-col">
+                <h4>Продукт</h4>
+                <a href="features.html">Функции</a>
+                <a href="about.html">За нас</a>
+            </div>
+            <div class="footer-col">
+                <h4>Акаунт</h4>
+                <a href="login.html">Вход</a>
+                <a href="#">Регистрация</a>
+            </div>
+            <div class="footer-col">
+                <h4>Правни</h4>
+                <a href="#">Поверителност</a>
+                <a href="#">Условия</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Match & Meal. Всички права запазени.
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+</body>
+</html>

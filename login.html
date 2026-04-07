@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match & Meal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="login.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="login-page">
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="home.html" class="logo"> <i class="bx bx-dish"></i> Match & Meal </a>
+            
+            <div class="nav-links" id="nav-links">
+                <a href="features.html">Функции</a>
+                <a href="about.html">За нас</a>
+                <button id="theme-toggle" class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+                <a href="login.html" class="btn-primary">Вход</a>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="floating-icon icon-1" style="top: 15%; left: 10%;"><i class="fa-solid fa-lemon"></i></div>
+    <div class="floating-icon icon-2" style="bottom: 15%; right: 10%; font-size: 3.5rem;"><i class="fa-solid fa-pepper-hot"></i></div>
+
+    <div class="login-center-wrapper">
+        <main class="login-card fade-in-up">
+            <div class="login-header">
+                <div class="icon-login pulse-anim">
+                    <i class="bx bx-dish"></i>
+                </div>
+                <h1>Добре дошли в <br><span style="color: var(--primary-green);">Match & Meal</span></h1>
+                <p class="subtitle">Влез, за да откриеш невероятни рецепти</p>
+            </div>
+            
+            <form class="login-form">
+                <div class="form-intro">
+                    <h2 class="form-title">Вход</h2>
+                    <p class="form-subtitle">Въведи своите данни за достъп до акаунта</p>
+                </div>
+
+                <label for="email">Имейл</label>
+                <input type="email" id="email" name="email" placeholder="ти@example.com" required>
+
+                <label for="password">Парола</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+
+                <button type="submit" class="btn-primary full-width">Вход</button>
+
+                <hr class="separator">
+
+                <a href="signup.html" class="btn-secondary full-width signup-btn">
+                    Нямаш акаунт? Регистрирай се
+                </a>
+            </form>
+
+            <p class="terms-footer">
+                Продължавайки, се съгласяваш с нашите <a href="#" style="color: var(--primary-green); text-decoration: none;">Условия за ползване</a> и <a href="#" style="color: var(--primary-green); text-decoration: none;">Политика за поверителност</a>.
+            </p>
+        </main>
+    </div>
+    
+    <script src="home.js"></script>
+</body>
+</html>

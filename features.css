@@ -1,0 +1,412 @@
+/* --- Features Page Specific Styles --- */
+
+/* Hero Section */
+.features-hero {
+    position: relative;
+    padding-top: 180px;
+    padding-bottom: 80px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.features-hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    letter-spacing: -1px;
+}
+
+.features-hero .highlight {
+    background: linear-gradient(120deg, var(--primary-green), #81c784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Feature Rows (Zig-Zag Layout) */
+.feature-row {
+    padding: 80px 0;
+}
+
+.feature-container {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+/* Reverse layout for specific rows */
+.feature-row.reverse .feature-container {
+    flex-direction: row-reverse;
+}
+
+.feature-text {
+    flex: 1;
+}
+
+.feature-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Text Styling */
+.feature-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.feature-icon-header i {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+}
+
+.feature-icon-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+}
+
+.feature-text p {
+    font-size: 1.15rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Lists */
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.feature-list li i {
+    color: var(--primary-green);
+}
+
+.feature-list.simple li i {
+    font-weight: 400; /* For outlines like bookmarks */
+}
+
+/* Dietary Tags (Text Side) */
+.dietary-tags-display {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.d-tag {
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.d-tag.highlighted {
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 10px rgba(58, 128, 40, 0.2);
+}
+
+/* --- The Visual Mockups (CSS Graphics) --- */
+
+.mockup-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 35px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.mockup-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.floating-mockup {
+    animation: float 8s ease-in-out infinite;
+}
+
+/* Feature 1 Visual: Tag Cloud */
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.tag.filled {
+    background-color: var(--primary-green);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(58, 128, 40, 0.2);
+}
+
+.mockup-subtext {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Feature 2 Visual: Toggles */
+.mockup-title {
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-color);
+    padding: 18px 20px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.toggle-row.highlighted {
+    background-color: rgba(58, 128, 40, 0.08); 
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+
+[data-theme="dark"] .toggle-row.highlighted {
+    background-color: rgba(76, 175, 80, 0.15);
+}
+
+.toggle-switch {
+    width: 50px;
+    height: 28px;
+    background-color: #ddd;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+}
+
+[data-theme="dark"] .toggle-switch {
+    background-color: #555;
+}
+
+.toggle-switch.active {
+    background-color: var(--primary-green);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toggle-switch.active::after {
+    left: 26px;
+}
+
+/* Feature 3 Visual: Recipe Card */
+.mockup-card.recipe-mockup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+}
+
+.recipe-content h4 {
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.recipe-content .meta {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    display: flex;
+    gap: 15px;
+    font-weight: 600;
+}
+
+.recipe-heart i {
+    font-size: 1.8rem;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.recipe-heart i:hover {
+    transform: scale(1.15);
+}
+
+/* --- "And So Much More" Grid --- */
+.more-features {
+    padding: 100px 0;
+    background-color: transparent; 
+}
+
+.centered-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 70px;
+}
+
+.features-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+}
+
+.small-feature-card {
+    background-color: var(--card-bg);
+    padding: 40px 30px;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-align: center;
+}
+
+.small-feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.small-feature-card .icon-header {
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease;
+}
+
+.small-feature-card:hover .icon-header {
+    transform: scale(1.1);
+}
+
+.small-feature-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+    font-weight: 800;
+}
+
+.small-feature-card p {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* --- CTA Section --- */
+.features-cta {
+    padding: 0 20px 100px 20px;
+}
+
+.cta-box {
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, var(--primary-green), #2e6620);
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(58, 128, 40, 0.2);
+}
+
+.cta-box h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.cta-box p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+}
+
+.cta-box .btn-primary {
+    background-color: white;
+    color: var(--primary-green);
+}
+
+.cta-box .btn-primary:hover {
+    background-color: #f0f0f0;
+}
+
+.cta-secondary {
+    background-color: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+}
+
+.cta-secondary:hover {
+    border-color: white !important;
+    color: white !important;
+}
+
+/* Mobile Responsiveness for Features */
+@media (max-width: 900px) {
+    .features-hero h1 { font-size: 3.2rem; }
+
+    .feature-container {
+        flex-direction: column;
+        gap: 50px;
+        text-align: center;
+    }
+
+    .feature-row.reverse .feature-container {
+        flex-direction: column;
+    }
+
+    .feature-icon-header {
+        justify-content: center;
+    }
+
+    .feature-list li {
+        justify-content: center;
+    }
+    
+    .dietary-tags-display {
+        justify-content: center;
+    }
+    
+    .cta-box {
+        padding: 60px 20px;
+        border-radius: 24px;
+    }
+    
+    .cta-box h2 { font-size: 2.2rem; }
+}

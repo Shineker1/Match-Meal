@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match & Meal - Find Recipes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="app-body">
+    <nav class="navbar app-navbar">
+        <div class="container nav-container">
+            <a href="home.html" class="logo"> <i class="bx bx-dish"></i> Match & Meal </a>
+            <div class="nav-links">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=3A8028&color=fff" alt="User">
+                    <span>Koi e toz</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fa-solid fa-basket-shopping"></i> Pantry</h3>
+                <p class="sidebar-sub">Select what you have</p>
+            </div>
+            
+            <div class="ingredient-list-container" id="sidebar-ingredients">
+                </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <div class="top-controls-bar">
+                <div class="filter-wrapper">
+                    <button class="btn-secondary filter-toggle">
+                        <i class="fa-solid fa-sliders"></i> Filters
+                    </button>
+                    <div class="filter-dropdown">
+                        <label><input type="checkbox"> Vegetarian</label>
+                        <label><input type="checkbox"> Vegan</label>
+                        <label><input type="checkbox"> Gluten-Free</label>
+                        <label><input type="checkbox"> High Protein</label>
+                    </div>
+                </div>
+
+                <div class="search-bar-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search for ingredients..." id="ingredient-search">
+                </div>
+            </div>
+
+            <div id="recipe-results">
+                <div class="results-header-text">
+                    <h2>Suggested Recipes</h2>
+                    <span id="match-count">2 Found based on selection</span>
+                </div>
+
+                <div class="recipe-grid">
+                    <div class="recipe-card" onclick="openRecipeModal('creamy-pasta')">
+                        <div class="recipe-img" style="background-image: url('https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=800&q=80');">
+                            <span class="time-badge"><i class="fa-regular fa-clock"></i> 25m</span>
+                        </div>
+                        <div class="recipe-content">
+                            <h3>Creamy Spinach Chicken Pasta</h3>
+                            <p class="recipe-desc">A quick and delicious creamy pasta dish using your available ingredients.</p>
+                            <div class="recipe-stats">
+                                <div class="stat"><i class="fa-solid fa-fire"></i> 450 Cal</div>
+                                <div class="stat"><i class="fa-solid fa-dumbbell"></i> 32g Protein</div>
+                            </div>
+                            <div class="nutrition-tags">
+                                <span class="tag tag-protein">High Protein</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-card" onclick="openRecipeModal('omelette')">
+                        <div class="recipe-img" style="background-image: url('https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=800&q=80');">
+                            <span class="time-badge"><i class="fa-regular fa-clock"></i> 10m</span>
+                        </div>
+                        <div class="recipe-content">
+                            <h3>Classic Cheese Omelette</h3>
+                            <p class="recipe-desc">Fluffy eggs folded with melted cheese. The perfect quick breakfast.</p>
+                            <div class="recipe-stats">
+                                <div class="stat"><i class="fa-solid fa-fire"></i> 280 Cal</div>
+                                <div class="stat"><i class="fa-solid fa-dumbbell"></i> 18g Protein</div>
+                            </div>
+                            <div class="nutrition-tags">
+                                <span class="tag tag-keto">Keto</span>
+                                <span class="tag tag-gf">GF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
