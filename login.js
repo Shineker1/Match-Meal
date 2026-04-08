@@ -22,7 +22,7 @@ form.addEventListener("submit", function (event) {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    //  Prevent empty submissions
+    // Prevent empty submissions
     if (!email || !password) {
         return; // do nothing if fields are empty
     }

@@ -20,8 +20,20 @@
             <div class="app-tabs">
                 <button class="tab-btn active" onclick="switchView('recipes-view')"><i class="fa-solid fa-utensils"></i> Рецепти</button>
                 <button class="tab-btn" onclick="switchView('planner-view')"><i class="fa-regular fa-calendar-days"></i> Планьор</button>
+                <button class="tab-btn" onclick="switchView('favorites-view')"><i class="fa-solid fa-heart"></i> Любими</button>
             </div>
+                <div id="favorites-view" class="app-view">
+                     <div class="container planner-container">
+                <div class="planner-header">
+                    <h2><i class="fa-solid fa-heart" style="color: #ff4757;"></i> Твоите любими рецепти</h2>
+                    <p>Всички ястия, които си запазил, на едно място.</p>
+                </div>
+                <div class="recipe-grid" id="favorites-grid-container">
+            </div>
+         </div>
+     </div>
 
+            
             <div class="nav-links">
                 <div class="user-profile">
                     <img src="https://ui-avatars.com/api/?name=Ivan+Ivanov&background=3A8028&color=fff" alt="User">
