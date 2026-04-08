@@ -14,27 +14,31 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const login = document.getElementById("login");
+const form = document.getElementById("login-form");
 
-login.addEventListener("click", function (event) {
+form.addEventListener("submit", function (event) {
     event.preventDefault();
-    
-    // input fields for login
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    //  Prevent empty submissions
+    if (!email || !password) {
+        return; // do nothing if fields are empty
+    }
 
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredentials) => {
-        const user = userCredentials.user;
+        .then((userCredentials) => {
+            const user = userCredentials.user;
 
-        // Store user info in session/local storage
-        localStorage.setItem("user", JSON.stringify({ uid:user.uid, email: user.email}));
+            localStorage.setItem("user", JSON.stringify({
+                uid: user.uid,
+                email: user.email
+            }));
 
-        // Redirect to profile page
-        window.location.href = "main.html";
-    })
-    .catch((error) => {
-        const errorMessage = error.message;
-        alert('Login failed: ${errorMessage}')
-    })
+            window.location.href = "main.html";
+        })
+        .catch((error) => {
+            alert(`Login failed: ${error.message}`);
+        });
 });
