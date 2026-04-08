@@ -34,7 +34,7 @@ createUserWithEmailAndPassword(auth, email, password)
       email: user.email,
       displayName : username,
     }).then(() =>{
-      window.location.href ="login.html"
+      window.location.href = "login.html"
     });
   })
   .catch((error) => {
