@@ -1,0 +1,461 @@
+/* --- APP GLOBAL & NAVBAR --- */
+.app-body {
+    background-color: var(--bg-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.app-navbar {
+    position: sticky;
+    top: 0;
+    padding: 12px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background: var(--card-bg);
+    z-index: 100;
+}
+
+.app-navbar .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Централни Табове */
+.app-tabs {
+    display: flex;
+    gap: 10px;
+    background: var(--bg-color);
+    padding: 5px;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.tab-btn:hover {
+    color: var(--text-dark);
+}
+
+.tab-btn.active {
+    background: var(--primary-green);
+    color: white;
+    box-shadow: 0 2px 8px rgba(58, 128, 40, 0.3);
+}
+
+/* Профил */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.user-profile img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-green);
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    margin-left: 5px;
+}
+
+.settings-btn:hover {
+    color: var(--primary-green);
+    transform: rotate(45deg);
+}
+
+/* Управление на изгледите */
+.app-view {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.app-view.active-view {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RECIPES VIEW LAYOUT --- */
+.app-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* По-широка колона за търсачката */
+    min-height: calc(100vh - 70px);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- КОМПАКТЕН СИДБАР (Ляво) --- */
+.compact-sidebar {
+    background: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 25px; 
+    height: calc(100vh - 70px);
+    position: sticky;
+    top: 70px;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: 20px;
+}
+
+.sidebar-header h3 {
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-sub {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+/* Търсачка в сидбара */
+.sidebar-search {
+    display: flex;
+    background: var(--bg-color);
+    padding: 0 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    height: 45px;
+    align-items: center;
+    margin-bottom: 20px;
+    transition: border-color 0.2s;
+}
+
+.sidebar-search:focus-within {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(58, 128, 40, 0.1);
+}
+
+.sidebar-search input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--text-dark);
+    margin-left: 10px;
+}
+
+/* Компактни бутони за съставки */
+.compact-ingredient-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ing-btn {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.ing-btn:hover {
+    border-color: var(--primary-green);
+}
+
+.ing-btn.active {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 10px rgba(58, 128, 40, 0.2);
+}
+
+/* --- MAIN CONTENT (Дясно) --- */
+.main-content {
+    padding: 30px 40px;
+}
+
+.top-controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-header-text h2 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+}
+
+#match-count {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Истинско Dropdown Меню за Филтри */
+.filter-wrapper {
+    position: relative;
+}
+
+.filter-toggle {
+    padding: 10px 20px;
+}
+
+.drop-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+.filter-wrapper.open .drop-icon {
+    transform: rotate(180deg);
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    width: 220px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.filter-wrapper.open .filter-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.filter-dropdown label {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.filter-dropdown input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-green);
+    cursor: pointer;
+}
+
+
+/* --- PLANNER VIEW (Цял екран) --- */
+.planner-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+}
+
+.planner-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.planner-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.planner-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.days-scroll-container {
+    overflow-x: auto;
+    padding-bottom: 15px;
+}
+
+.days-scroll-container::-webkit-scrollbar {
+    height: 10px;
+}
+.days-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.calendar-grid {
+    display: flex;
+    gap: 20px;
+    min-width: 1000px; 
+}
+
+.day-card {
+    flex: 1;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+.day-card h4 {
+    text-align: center;
+    color: var(--primary-green);
+    margin-bottom: 20px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.meal-slot {
+    background: var(--bg-color);
+    border: 2px dashed var(--border-color);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.meal-slot:hover {
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    background: rgba(58, 128, 40, 0.05);
+}
+
+/* Останалите стилове за рецепти и модал (recipe-grid, recipe-card, modal) остават същите от предния код... */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+.recipe-card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.recipe-card:hover { transform: translateY(-5px); }
+.recipe-img {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.time-badge {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+.recipe-content { padding: 20px; }
+.recipe-content h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);}
+.recipe-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px;}
+.recipe-stats { display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-light); font-weight: 700;}
+
+/* Сърце */
+.fav-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #ccc;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+    z-index: 10;
+}
+.fav-btn:hover { transform: scale(1.1); }
+.fav-btn.active { color: #ff4757; }
+.fav-btn.active i { font-weight: 900; animation: heartPop 0.3s ease; }
+@keyframes heartPop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+/* Модал */
+.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); overflow-y: auto; }
+.modal-content { background-color: var(--card-bg); margin: 5% auto; border-radius: 24px; width: 90%; max-width: 800px; position: relative; animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+@keyframes modalSlideIn { from { transform: translateY(50px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+.close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; color: white; cursor: pointer; z-index: 10; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.close-modal:hover { transform: rotate(90deg); }
+.modal-header-img { height: 300px; background-size: cover; background-position: center; position: relative; }
+.modal-header-img::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+.modal-title-box { position: absolute; bottom: 20px; left: 30px; color: white; z-index: 2; }
+.modal-title-box h2 { font-size: 2rem; font-weight: 800; margin-bottom: 5px; }
+.modal-details { padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.detail-section h3 { font-size: 1.2rem; color: var(--text-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+.detail-section ul { list-style-position: inside; color: var(--text-light); line-height: 1.8; }
+.benefits-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+.b-tag { background: rgba(58, 128, 40, 0.1); color: var(--primary-green); padding: 6px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; border: 1px solid var(--primary-green); }
+
+/* Мобилни адаптации */
+@media (max-width: 900px) {
+    .app-layout { grid-template-columns: 1fr; }
+    .compact-sidebar { height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .app-navbar .nav-container { flex-wrap: wrap; justify-content: center; gap: 15px; }
+    .app-tabs { order: 3; width: 100%; justify-content: center; }
+    .user-name-desktop { display: none; }
+    .modal-details { grid-template-columns: 1fr; }
+}

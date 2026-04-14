@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match & Meal - Админ Панел</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container { max-width: 1000px; margin: 60px auto; padding: 20px; }
+        .admin-card { background: var(--card-bg); padding: 30px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .admin-form input, .admin-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Nunito', sans-serif; }
+        .item-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-color); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .btn-danger { background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
+        .btn-danger:hover { opacity: 0.8; }
+        
+        #auth-status { text-align: center; margin-top: 150px; font-size: 1.2rem; font-weight: bold; }
+    </style>
+</head>
+<body class="app-body">
+    <nav class="navbar app-navbar">
+        <div class="container nav-container">
+            <a href="main.html" class="logo"> <i class="bx bx-dish"></i> Админ Панел </a>
+            <div class="nav-links">
+                <button id="logout-btn" class="btn-secondary" style="display: none;">Изход</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="auth-status">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-green); margin-bottom: 10px;"></i>
+        <p>Проверка на администраторски права...</p>
+    </div>
+
+    <div class="admin-container" id="admin-content" style="display: none;">
+        <h2 style="margin-bottom: 30px;">Управление на съдържанието</h2>
+        
+        <div class="admin-card">
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-basket-shopping"></i> Съставки</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="new-ingredient" placeholder="Име на съставката (напр. Яйца)">
+                <button id="add-ingredient-btn" class="btn-primary" style="white-space: nowrap;">Добави съставка</button>
+            </div>
+            <div class="item-list" id="ingredients-list">
+                </div>
+        </div>
+
+        <div class="admin-card admin-form">
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-utensils"></i> Добави Нова Рецепта</h3>
+            <input type="text" id="r-title" placeholder="Заглавие на рецептата">
+            <input type="text" id="r-desc" placeholder="Кратко описание">
+            <input type="text" id="r-img" placeholder="URL на снимка (напр. от Unsplash)">
+            
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="r-time" placeholder="Време (напр. 25 мин)">
+                <input type="text" id="r-cal" placeholder="Калории (напр. 450 kcal)">
+                <input type="text" id="r-pro" placeholder="Протеин (напр. 32г)">
+            </div>
+            
+            <textarea id="r-ingredients" rows="3" placeholder="Съставки (разделени със запетая: Яйца, Сирене, Масло)"></textarea>
+            <textarea id="r-steps" rows="3" placeholder="Стъпки (разделени със запетая: Счупи яйцата, Изпържи ги)"></textarea>
+            <input type="text" id="r-benefits" placeholder="Ползи/Тагове (разделени със запетая: Кето, Без глутен)">
+            
+            <button id="add-recipe-btn" class="btn-primary">Добави Рецепта в Базата</button>
+
+            <h3 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">Всички рецепти</h3>
+            <div class="item-list" id="recipes-list">
+                </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
