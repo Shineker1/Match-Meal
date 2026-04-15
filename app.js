@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCteeftXledZI9is3jftXRAiHv10yd48Mo",
@@ -8,8 +8,10 @@ const firebaseConfig = {
     projectId: "matchnmeal-f69bc",
     storageBucket: "matchnmeal-f69bc.firebasestorage.app",
     messagingSenderId: "982378294902",
-    appId: "1:982378294902:web:b6d142296f6af905b43957"
+    appId: "1:982378294902:web:b6d142296f6af905b43957",
+    measurementId: "G-3W37S47ZXF"
 };
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -199,3 +201,67 @@ window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
 // Календар логиката (добави функцията renderCalendar от предишния отговор тук)
 function renderCalendar() { /* ... */ }
 window.toggleFilterMenu = function(event) { /* ... */ }
+
+const newRecipes = [
+  {
+    "title": "Кето купа с тофу и броколи",
+    "desc": "Бързо, засищащо и изцяло на растителна основа ястие, перфектно за лека вечеря.",
+    "img": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+    "time": "20 мин",
+    "calories": "350 kcal",
+    "protein": "25g",
+    "benefits": ["Веган", "Вегетарианско", "Без глутен", "Високо протеиново", "Нисковъглехидратно", "Кето"],
+    "ingredients": ["200г твърдо тофу", "150г броколи", "2 с.л. соев сос без глутен", "1 с.л. сусамово олио", "1 скилидка чесън", "1 ч.л. сусам"],
+    "steps": ["Отцедете добре тофуто и го нарежете на кубчета.", "Запържете тофуто в сусамово олио до златисто.", "Добавете броколите и чесъна, гответе 4-5 минути.", "Добавете соевия сос, разбъркайте и поръсете със сусам."]
+  }
+];
+
+async function seedDatabase() {
+    console.log("Започва добавяне на рецепти...");
+    for (const recipe of newRecipes) {
+        try {
+            await addDoc(collection(db, "recipes"), recipe);
+            console.log(`Успешно добавена: ${recipe.title}`);
+        } catch (error) {
+            console.error("Грешка при добавяне: ", error);
+        }
+    }
+    console.log("Готово! Изтрий този временен код.");
+}
+// РАЗКОМЕНТИРАЙ ДОЛНИЯ РЕД САМО ЗА 1 СЕКУНДА, ЗА ДА СЕ ИЗПЪЛНИ ФУНКЦИЯТА:
+// seedDatabase();
+
+const profileToggle = document.getElementById('user-profile-toggle');
+const profileDropdown = document.getElementById('profile-dropdown');
+const dropdownLogoutBtn = document.getElementById('dropdown-logout-btn');
+
+// Показване/скриване на менюто при клик върху името/снимката
+if (profileToggle && profileDropdown) {
+    profileToggle.addEventListener('click', (event) => {
+        event.stopPropagation(); // Предотвратява затварянето веднага
+        profileDropdown.classList.toggle('show');
+    });
+}
+
+// Затваряне на менюто, ако кликнеш някъде другаде по екрана
+window.addEventListener('click', (event) => {
+    if (profileDropdown && profileDropdown.classList.contains('show')) {
+        if (!profileToggle.contains(event.target)) {
+            profileDropdown.classList.remove('show');
+        }
+    }
+});
+
+// Логика за бутона "Изход" от падащото меню
+if (dropdownLogoutBtn) {
+    dropdownLogoutBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Спира презареждането на страницата от линка
+
+        signOut(auth).then(() => {
+            localStorage.removeItem('user');
+            window.location.href = "home.html";
+        }).catch((error) => {
+            alert("Възникна грешка при излизане: " + error.message);
+        });
+    });
+}

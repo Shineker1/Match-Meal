@@ -99,4 +99,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial check on page load
     handleScrollAnimation();
+
+    const savedUser = localStorage.getItem('user');
+   
+    // Намираме бутона за вход в навигацията
+    const loginBtn = document.querySelector('.nav-links .btn-primary');
+
+    if (savedUser && loginBtn) {
+        // Ако има логнат потребител, променяме бутона
+        loginBtn.href = 'main.html';
+        loginBtn.innerHTML = 'Към приложението <i class="fa-solid fa-arrow-right"></i>';
+       
+        // Опционално: Променяме и големия бутон в Hero секцията (ако сме на home.html)
+        const heroLoginBtn = document.querySelector('.hero-buttons .btn-primary');
+        if(heroLoginBtn) {
+            heroLoginBtn.href = 'main.html';
+            heroLoginBtn.innerHTML = 'Продължи готвенето <i class="fa-solid fa-arrow-right"></i>';
+        }
+    }
 });

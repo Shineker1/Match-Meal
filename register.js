@@ -2,7 +2,7 @@
   import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCteeftXledZI9is3jftXRAiHv10yd48Mo",
     authDomain: "matchnmeal-f69bc.firebaseapp.com",
     projectId: "matchnmeal-f69bc",
@@ -10,7 +10,7 @@
     messagingSenderId: "982378294902",
     appId: "1:982378294902:web:b6d142296f6af905b43957",
     measurementId: "G-3W37S47ZXF"
-  };
+};
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
