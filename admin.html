@@ -10,8 +10,13 @@
     <style>
         .admin-container { max-width: 1000px; margin: 60px auto; padding: 20px; }
         .admin-card { background: var(--card-bg); padding: 30px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .admin-form input, .admin-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Nunito', sans-serif; }
-        .item-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .admin-form input, .admin-form textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Nunito', sans-serif; background: var(--bg-color); color: var(--text-dark); }
+        
+        /* НОВИ СТИЛОВЕ ЗА ФОРМАТА */
+        .admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        
+        .item-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto;}
         .item-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-color); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); }
         .btn-danger { background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
         .btn-danger:hover { opacity: 0.8; }
@@ -40,34 +45,33 @@
         <div class="admin-card">
             <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-basket-shopping"></i> Съставки</h3>
             <div style="display: flex; gap: 10px;">
-                <input type="text" id="new-ingredient" placeholder="Име на съставката (напр. Яйца)">
+                <input type="text" id="new-ingredient" placeholder="Име на съставката (напр. Яйца)" style="padding:12px; border-radius:8px; border:1px solid var(--border-color); width:100%;">
                 <button id="add-ingredient-btn" class="btn-primary" style="white-space: nowrap;">Добави съставка</button>
             </div>
-            <div class="item-list" id="ingredients-list">
-                </div>
+            <div class="item-list" id="ingredients-list"></div>
         </div>
 
         <div class="admin-card admin-form">
-            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-utensils"></i> Добави Нова Рецепта</h3>
-            <input type="text" id="r-title" placeholder="Заглавие на рецептата">
-            <input type="text" id="r-desc" placeholder="Кратко описание">
-            <input type="text" id="r-img" placeholder="URL на снимка (напр. от Unsplash)">
+            <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-utensils"></i> Добави Нова Рецепта</h3>
             
-            <div style="display: flex; gap: 10px;">
+            <div class="admin-form-grid">
+                <input type="text" id="r-title" class="full-width" placeholder="Заглавие на рецептата">
+                <input type="text" id="r-desc" class="full-width" placeholder="Кратко описание">
+                <input type="text" id="r-img" class="full-width" placeholder="URL на снимка (напр. от Unsplash)">
+                
                 <input type="text" id="r-time" placeholder="Време (напр. 25 мин)">
                 <input type="text" id="r-cal" placeholder="Калории (напр. 450 kcal)">
                 <input type="text" id="r-pro" placeholder="Протеин (напр. 32г)">
+                <input type="text" id="r-benefits" placeholder="Тагове: Веган, Без глутен...">
+                
+                <textarea id="r-ingredients" class="full-width" rows="3" placeholder="Съставки (разделени със запетая: Яйца, Сирене, Масло)"></textarea>
+                <textarea id="r-steps" class="full-width" rows="3" placeholder="Стъпки (разделени със запетая: Счупи яйцата, Изпържи ги)"></textarea>
             </div>
             
-            <textarea id="r-ingredients" rows="3" placeholder="Съставки (разделени със запетая: Яйца, Сирене, Масло)"></textarea>
-            <textarea id="r-steps" rows="3" placeholder="Стъпки (разделени със запетая: Счупи яйцата, Изпържи ги)"></textarea>
-            <input type="text" id="r-benefits" placeholder="Ползи/Тагове (разделени със запетая: Кето, Без глутен)">
-            
-            <button id="add-recipe-btn" class="btn-primary">Добави Рецепта в Базата</button>
+            <button id="add-recipe-btn" class="btn-primary" style="width: 100%;">Добави Рецепта в Базата</button>
 
             <h3 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">Всички рецепти</h3>
-            <div class="item-list" id="recipes-list">
-                </div>
+            <div class="item-list" id="recipes-list"></div>
         </div>
     </div>
 

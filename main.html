@@ -21,26 +21,16 @@
                 <button class="tab-btn" onclick="switchView('planner-view')"><i class="fa-regular fa-calendar-days"></i> Планьор</button>
                 <button class="tab-btn" onclick="switchView('favorites-view')"><i class="fa-solid fa-heart"></i> Любими</button>
             </div>
-                <div id="favorites-view" class="app-view">
-                     <div class="container planner-container">
-                <div class="planner-header">
-                    <h2><i class="fa-solid fa-heart" style="color: #ff4757;"></i> Твоите любими рецепти</h2>
-                    <p>Всички ястия, които си запазил, на едно място.</p>
-                </div>
-                <div class="recipe-grid" id="favorites-grid-container">
-            </div>
-         </div>
-     </div>
+            
             <div class="nav-links">
                 <div class="user-profile" id="user-profile-toggle" style="position: relative; cursor: pointer;">
-                    <img src="https://ui-avatars.com/api/?name=Ivan+Ivanov&background=3A8028&color=fff" alt="User">
+                    <img src="https://ui-avatars.com/api/?name=User&background=3A8028&color=fff" alt="User">
                     <span class="user-name-desktop" style="display: flex; align-items: center; gap: 5px;">
-                        Иван Иванов <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>
+                         Зареждане... <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>
                     </span>
                 
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="#" id="change-email-btn"><i class="fa-regular fa-envelope"></i> Промяна на имейл</a>
-                        <a href="#" id="change-pass-btn"><i class="fa-solid fa-lock"></i> Промяна на парола</a>
+                        <a href="#" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> Настройки профил</a>
                         <hr style="margin: 5px 0; border: none; border-top: 1px solid var(--border-color, #eee);">
                         <a href="#" id="dropdown-logout-btn" style="color: #ff4757;"><i class="fa-solid fa-right-from-bracket"></i> Изход</a>
                     </div>
@@ -51,7 +41,6 @@
 
     <div id="recipes-view" class="app-view active-view">
         <div class="app-layout">
-            
             <aside class="sidebar compact-sidebar">
                 <div class="sidebar-header">
                     <h3><i class="fa-solid fa-basket-shopping"></i> Твоят килер</h3>
@@ -63,8 +52,7 @@
                     <input type="text" placeholder="Търси съставки..." id="ingredient-search">
                 </div>
                 
-                <div class="compact-ingredient-list" id="sidebar-ingredients">
-                    </div>
+                <div class="compact-ingredient-list" id="sidebar-ingredients"></div>
             </aside>
 
             <main class="main-content">
@@ -79,17 +67,26 @@
                             <i class="fa-solid fa-sliders"></i> Филтри <i class="fa-solid fa-chevron-down drop-icon"></i>
                         </button>
                         <div class="filter-dropdown" id="filter-dropdown">
-                            <label><input type="checkbox"> Вегетарианско</label>
-                            <label><input type="checkbox"> Веган</label>
-                            <label><input type="checkbox"> Без глутен</label>
-                            <label><input type="checkbox"> Високо протеиново</label>
+                            <label><input type="checkbox" value="Вегетарианско" onchange="window.renderRecipes()"> Вегетарианско</label>
+                            <label><input type="checkbox" value="Веган" onchange="window.renderRecipes()"> Веган</label>
+                            <label><input type="checkbox" value="Без глутен" onchange="window.renderRecipes()"> Без глутен</label>
+                            <label><input type="checkbox" value="Високо протеиново" onchange="window.renderRecipes()"> Високо протеиново</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="recipe-grid" id="recipe-grid-container">
-                    </div>
+                <div class="recipe-grid" id="recipe-grid-container"></div>
             </main>
+        </div>
+    </div>
+
+    <div id="favorites-view" class="app-view">
+        <div class="container planner-container">
+            <div class="planner-header">
+                <h2><i class="fa-solid fa-heart" style="color: #ff4757;"></i> Твоите любими рецепти</h2>
+                <p>Всички ястия, които си запазил, на едно място.</p>
+            </div>
+            <div class="recipe-grid" id="favorites-grid-container"></div>
         </div>
     </div>
 
@@ -100,17 +97,36 @@
                 <p>Планирай храненията си за седмицата. Кликни върху плюсчето, за да добавиш любима рецепта.</p>
             </div>
             <div class="days-scroll-container">
-                <div id="calendar-grid" class="calendar-grid">
-                    </div>
+                <div id="calendar-grid" class="calendar-grid"></div>
             </div>
         </div>
     </div>
 
     <div id="recipe-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body" id="modal-body-content">
+            <span class="close-modal" onclick="closeModal('recipe-modal')">&times;</span>
+            <div class="modal-body" id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <div id="planner-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 20px;">
+            <span class="close-modal" onclick="closeModal('planner-modal')" style="color: #333; z-index: 20;">&times;</span>
+            <h3 style="margin-bottom: 20px; font-size: 1.5rem;"><i class="fa-solid fa-plus"></i> Избери от любими</h3>
+            <div id="planner-favorites-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto;">
                 </div>
+            <button class="btn-secondary" style="margin-top: 15px; width: 100%; border-color: #ff4757; color: #ff4757;" onclick="clearPlannerSlot()">Изчисти храненето</button>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; padding: 30px;">
+            <span class="close-modal" onclick="closeModal('settings-modal')" style="color: #333;">&times;</span>
+            <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-gear"></i> Настройки на профила</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" id="settings-name" placeholder="Ново екранно име" style="padding: 12px; border-radius: 8px; border: 1px solid #ccc; width: 100%;">
+                <button class="btn-primary" style="width: 100%;" onclick="saveSettings()">Запази промените</button>
+            </div>
         </div>
     </div>
 

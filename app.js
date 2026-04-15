@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCteeftXledZI9is3jftXRAiHv10yd48Mo",
@@ -12,15 +12,15 @@ const firebaseConfig = {
     measurementId: "G-3W37S47ZXF"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
 let userFavorites = [];
+let userPlanner = {}; // Структура за календара
 let allIngredients = [];
-let allRecipes = {}; // Обектив с ID-та
+let allRecipes = {}; 
 let selectedIngredients = [];
 
 // Проверка на потребителя при зареждане
@@ -28,14 +28,15 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         
-        // Показване на името
-        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        
         if (userDoc.exists()) {
-            document.querySelector('.user-name-desktop').innerText = userDoc.data().displayName;
+            document.querySelector('.user-name-desktop').innerHTML = `${userDoc.data().displayName} <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>`;
             userFavorites = userDoc.data().favorites || [];
+            userPlanner = userDoc.data().planner || {}; 
         }
 
-        // Ако е админ, показваме бутон за админ панел
         if(user.email === "admin@matchnmeal.com"){
              const adminBtn = document.createElement('a');
              adminBtn.href = "admin.html";
@@ -47,40 +48,40 @@ onAuthStateChanged(auth, async (user) => {
 
         loadDataFromFirebase();
     } else {
-        window.location.href = "login.html"; // Пренасочване, ако не е логнат
+        window.location.href = "login.html";
     }
 });
 
-// Зареждане на базите данни
 async function loadDataFromFirebase() {
-    // 1. Съставки
     const ingSnap = await getDocs(collection(db, "ingredients"));
     allIngredients = [];
     ingSnap.forEach(doc => allIngredients.push(doc.data().name));
     renderSidebar(allIngredients);
 
-    // 2. Рецепти
     const recSnap = await getDocs(collection(db, "recipes"));
     allRecipes = {};
     recSnap.forEach(doc => {
         allRecipes[doc.id] = { id: doc.id, ...doc.data() };
     });
     
-    renderRecipes();
+    window.renderRecipes();
     renderFavorites();
-    renderCalendar(); // Остава същият от предишния код
+    renderCalendar(); 
 }
 
-// --- НАВИГАЦИЯ ---
+// --- НАВИГАЦИЯ И ИЗГЛЕДИ ---
 window.switchView = function(viewId) {
     document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active-view'));
     document.getElementById(viewId).classList.add('active-view');
 
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     event.currentTarget.classList.add('active');
+    
+    if(viewId === 'planner-view') renderCalendar();
+    if(viewId === 'favorites-view') renderFavorites();
 }
 
-// --- РЕНДЕРИРАНЕ НА КИЛЕР ---
+// --- КИЛЕР И ТЪРСЕНЕ ---
 function renderSidebar(items) {
     const sidebarContainer = document.getElementById('sidebar-ingredients');
     sidebarContainer.innerHTML = '';
@@ -99,10 +100,23 @@ window.toggleIngredient = function(name) {
     } else {
         selectedIngredients.push(name);
     }
-    renderSidebar(allIngredients);
+    renderSidebar(allIngredients); 
+    window.renderRecipes(); 
 }
 
-// --- РЕНДЕРИРАНЕ НА РЕЦЕПТИ И ЛЮБИМИ ---
+// --- ФИЛТРИ И РЕЦЕПТИ ---
+window.toggleFilterMenu = function(event) {
+    event.stopPropagation();
+    document.getElementById('filter-wrapper').classList.toggle('open');
+}
+
+window.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('filter-wrapper');
+    if (wrapper && !wrapper.contains(e.target) && !e.target.classList.contains('filter-toggle')) {
+        wrapper.classList.remove('open');
+    }
+});
+
 function createRecipeCardHTML(recipe, isFav) {
     const heartClass = isFav ? 'fa-solid' : 'fa-regular';
     const activeClass = isFav ? 'active' : '';
@@ -127,20 +141,55 @@ function createRecipeCardHTML(recipe, isFav) {
     `;
 }
 
-function renderRecipes() {
+window.renderRecipes = function() {
     const grid = document.getElementById('recipe-grid-container');
+    const matchCountEl = document.getElementById('match-count'); 
     grid.innerHTML = '';
-    Object.values(allRecipes).forEach(recipe => {
+   
+    let recipesToDisplay = Object.values(allRecipes);
+
+    // Филтриране по съставки
+    if (selectedIngredients.length > 0) {
+        recipesToDisplay = recipesToDisplay.filter(recipe => {
+            return selectedIngredients.every(selectedIng => {
+                return recipe.ingredients.some(recipeIng =>
+                    recipeIng.toLowerCase().includes(selectedIng.toLowerCase())
+                );
+            });
+        });
+    }
+
+    // Филтриране по тагове (Веган, Без Глутен и т.н.)
+    const checkboxes = document.querySelectorAll('#filter-dropdown input[type="checkbox"]');
+    const activeFilters = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+
+    if (activeFilters.length > 0) {
+        recipesToDisplay = recipesToDisplay.filter(recipe => {
+            if(!recipe.benefits) return false;
+            return activeFilters.every(filter => recipe.benefits.includes(filter));
+        });
+    }
+
+    if(matchCountEl) matchCountEl.innerText = selectedIngredients.length > 0 || activeFilters.length > 0 ? `Намерени: ${recipesToDisplay.length}` : 'Всички рецепти';
+
+    if(recipesToDisplay.length === 0) {
+        grid.innerHTML = "<p style='grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem; padding: 40px;'>Няма намерени рецепти с тези критерии.</p>";
+        return;
+    }
+
+    recipesToDisplay.forEach(recipe => {
         const isFav = userFavorites.includes(recipe.id);
         grid.innerHTML += createRecipeCardHTML(recipe, isFav);
     });
 }
 
-function renderFavorites() {
+window.renderFavorites = function() {
     const grid = document.getElementById('favorites-grid-container');
+    if(!grid) return;
     grid.innerHTML = '';
+    
     if(userFavorites.length === 0) {
-        grid.innerHTML = "<p>Все още нямате любими рецепти.</p>";
+        grid.innerHTML = "<p style='text-align: center; width: 100%; color: #666; margin-top: 30px;'>Все още нямате любими рецепти.</p>";
         return;
     }
     userFavorites.forEach(id => {
@@ -150,34 +199,122 @@ function renderFavorites() {
     });
 }
 
-// --- ЛОГИКА ЗА ДОБАВЯНЕ В ЛЮБИМИ ---
+// --- ЛЮБИМИ CRUD ---
 window.toggleFavorite = async function(event, recipeId) {
     event.stopPropagation();
     const userRef = doc(db, "users", currentUser.uid);
 
     if (userFavorites.includes(recipeId)) {
-        // Премахване
         userFavorites = userFavorites.filter(id => id !== recipeId);
         await updateDoc(userRef, { favorites: arrayRemove(recipeId) });
     } else {
-        // Добавяне
         userFavorites.push(recipeId);
         await updateDoc(userRef, { favorites: arrayUnion(recipeId) });
     }
 
-    // Обновяваме изгледите
-    renderRecipes();
+    window.renderRecipes();
     renderFavorites();
 }
 
-// --- МОДАЛЕН ПРОЗОРЕЦ (Остава същият) ---
-const modal = document.getElementById('recipe-modal');
+// --- СЕДМИЧЕН ПЛАНЬОР (MEAL PLANNER) ---
+const daysOfWeek = ['Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота', 'Неделя'];
+const mealTypes = ['Закуска', 'Обяд', 'Вечеря'];
+let activePlannerDay = null;
+let activePlannerMeal = null;
+
+function renderCalendar() {
+    const grid = document.getElementById('calendar-grid');
+    if(!grid) return;
+    grid.innerHTML = '';
+
+    daysOfWeek.forEach(day => {
+        let dayCard = document.createElement('div');
+        dayCard.className = 'day-card';
+        dayCard.innerHTML = `<h4>${day}</h4>`;
+
+        mealTypes.forEach(meal => {
+            const recipeId = userPlanner[day] && userPlanner[day][meal] ? userPlanner[day][meal] : null;
+            const recipe = recipeId ? allRecipes[recipeId] : null;
+            
+            const slot = document.createElement('div');
+            slot.className = 'meal-slot';
+            slot.onclick = () => window.openPlannerModal(day, meal);
+            
+            if (recipe) {
+                slot.style.borderColor = 'var(--primary-green)';
+                slot.style.background = 'rgba(58, 128, 40, 0.05)';
+                slot.innerHTML = `
+                    <div style="display:flex; flex-direction:column; width: 100%;">
+                        <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 5px;">${meal}</span>
+                        <span style="font-weight: 700; color: var(--primary-green); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${recipe.title}</span>
+                    </div>
+                `;
+            } else {
+                slot.innerHTML = `
+                    <div style="display:flex; flex-direction:column; width: 100%;">
+                        <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 5px;">${meal}</span>
+                        <span style="display:flex; align-items:center; gap:5px;"><i class="fa-solid fa-plus"></i> Добави</span>
+                    </div>
+                `;
+            }
+            dayCard.appendChild(slot);
+        });
+        grid.appendChild(dayCard);
+    });
+}
+
+window.openPlannerModal = function(day, meal) {
+    activePlannerDay = day;
+    activePlannerMeal = meal;
+    const list = document.getElementById('planner-favorites-list');
+    list.innerHTML = '';
+
+    if (userFavorites.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color: #666; padding: 20px;">Нямате запазени любими рецепти за добавяне.</p>';
+    } else {
+        userFavorites.forEach(id => {
+            const recipe = allRecipes[id];
+            if (recipe) {
+                list.innerHTML += `
+                    <div style="display:flex; align-items:center; gap: 15px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; cursor:pointer;" class="planner-item" onclick="selectRecipeForSlot('${id}')">
+                        <img src="${recipe.img}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                        <span style="font-weight: 600;">${recipe.title}</span>
+                    </div>
+                `;
+            }
+        });
+    }
+    document.getElementById('planner-modal').style.display = 'block';
+}
+
+window.selectRecipeForSlot = async function(recipeId) {
+    if (!userPlanner[activePlannerDay]) userPlanner[activePlannerDay] = {};
+    userPlanner[activePlannerDay][activePlannerMeal] = recipeId;
+    
+    await updateDoc(doc(db, "users", currentUser.uid), { planner: userPlanner });
+    renderCalendar();
+    window.closeModal('planner-modal');
+}
+
+window.clearPlannerSlot = async function() {
+    if (userPlanner[activePlannerDay] && userPlanner[activePlannerDay][activePlannerMeal]) {
+        delete userPlanner[activePlannerDay][activePlannerMeal];
+        await updateDoc(doc(db, "users", currentUser.uid), { planner: userPlanner });
+    }
+    renderCalendar();
+    window.closeModal('planner-modal');
+}
+
+// --- МОДАЛИ И НАСТРОЙКИ ---
+window.closeModal = function(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
 window.openRecipeModal = function(recipeId) {
     const data = allRecipes[recipeId];
     if(!data) return;
 
-    // Генерираш HTML за модала както в предишния отговор...
-    const benefitsHtml = data.benefits.map(b => `<span class="b-tag">${b}</span>`).join('');
+    const benefitsHtml = data.benefits ? data.benefits.map(b => `<span class="b-tag">${b}</span>`).join('') : '';
     const ingredientsHtml = data.ingredients.map(ing => `<li>${ing}</li>`).join('');
     const stepsHtml = data.steps.map((step, index) => `<li><strong>Стъпка ${index + 1}:</strong> ${step}</li>`).join('');
 
@@ -189,143 +326,72 @@ window.openRecipeModal = function(recipeId) {
         </div>
         <div class="modal-details">
             <div class="detail-section"><h3>Съставки</h3><ul>${ingredientsHtml}</ul><div class="benefits-tags">${benefitsHtml}</div></div>
-            <div class="detail-section"><h3>Приготвяне</h3><ul style="list-style-type: none; padding: 0;">${stepsHtml}</ul></div>
+            <div class="detail-section"><h3>Приготвяне</h3><ul style="list-style-type: none; padding: 0; gap:10px; display:flex; flex-direction:column;">${stepsHtml}</ul></div>
         </div>
     `;
-    modal.style.display = "block";
+    document.getElementById('recipe-modal').style.display = "block";
 }
 
-document.querySelector('.close-modal').onclick = () => modal.style.display = "none";
-window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
+window.openSettingsModal = function() {
+    document.getElementById('settings-name').value = currentUser.displayName || "";
+    document.getElementById('settings-modal').style.display = "block";
+    document.getElementById('profile-dropdown').classList.remove('show');
+}
 
-// Календар логиката (добави функцията renderCalendar от предишния отговор тук)
-function renderCalendar() { /* ... */ }
-window.toggleFilterMenu = function(event) { /* ... */ }
-
-const newRecipes = [
-  {
-    "title": "Кето купа с тофу и броколи",
-    "desc": "Бързо, засищащо и изцяло на растителна основа ястие, перфектно за лека вечеря.",
-    "img": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
-    "time": "20 мин",
-    "calories": "350 kcal",
-    "protein": "25g",
-    "benefits": ["Веган", "Вегетарианско", "Без глутен", "Високо протеиново", "Нисковъглехидратно", "Кето"],
-    "ingredients": ["200г твърдо тофу", "150г броколи", "2 с.л. соев сос без глутен", "1 с.л. сусамово олио", "1 скилидка чесън", "1 ч.л. сусам"],
-    "steps": ["Отцедете добре тофуто и го нарежете на кубчета.", "Запържете тофуто в сусамово олио до златисто.", "Добавете броколите и чесъна, гответе 4-5 минути.", "Добавете соевия сос, разбъркайте и поръсете със сусам."]
-  },
-  {
-    "title": "Пилешка кето купа с авокадо",
-    "desc": "Балансирано и богато на мазнини ястие, идеално за кето режим.",
-    "img": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80",
-    "time": "25 мин",
-    "calories": "420 kcal",
-    "protein": "30g",
-    "benefits": ["Без глутен", "Високо протеиново", "Нисковъглехидратно", "Кето"],
-    "ingredients": ["200г пилешко филе", "1 авокадо", "100г спанак", "1 с.л. зехтин", "1 скилидка чесън", "сол и пипер"],
-    "steps": [
-      "Нарежете пилешкото и го овкусете.",
-      "Запържете го в зехтин до готовност.",
-      "Добавете чесъна и спанака за 2-3 минути.",
-      "Сервирайте с нарязано авокадо."
-    ]
-  },
-  {
-    "title": "Салата с риба тон и яйца",
-    "desc": "Лека, но засищаща салата, подходяща за бърз обяд.",
-    "img": "https://images.unsplash.com/photo-1604908554165-2c9fefc4d4d3?auto=format&fit=crop&w=800&q=80",
-    "time": "15 мин",
-    "calories": "300 kcal",
-    "protein": "28g",
-    "benefits": ["Без глутен", "Високо протеиново", "Кето", "Нисковъглехидратно"],
-    "ingredients": ["1 консерва риба тон", "2 сварени яйца", "100г зелена салата", "1 с.л. майонеза", "лимонов сок"],
-    "steps": [
-      "Отцедете рибата тон.",
-      "Нарежете яйцата.",
-      "Смесете всички съставки в купа.",
-      "Подправете с майонеза и лимонов сок."
-    ]
-  },
-  {
-    "title": "Кето тиквички с пармезан",
-    "desc": "Ароматно зеленчуково ястие с хрупкава коричка.",
-    "img": "https://images.unsplash.com/photo-1605475128323-3d3a9c2c6c77?auto=format&fit=crop&w=800&q=80",
-    "time": "20 мин",
-    "calories": "250 kcal",
-    "protein": "12g",
-    "benefits": ["Вегетарианско", "Без глутен", "Кето", "Нисковъглехидратно"],
-    "ingredients": ["2 тиквички", "50г пармезан", "1 с.л. зехтин", "чесън на прах", "сол"],
-    "steps": [
-      "Нарежете тиквичките на кръгчета.",
-      "Подредете ги в тава и намажете със зехтин.",
-      "Поръсете с пармезан и подправки.",
-      "Печете 15 минути на 200°C."
-    ]
-  },
-  {
-    "title": "Омлет със спанак и сирене",
-    "desc": "Класически омлет с добавени зелени и кремообразна текстура.",
-    "img": "https://images.unsplash.com/photo-1585238342024-78d387f4a707?auto=format&fit=crop&w=800&q=80",
-    "time": "10 мин",
-    "calories": "270 kcal",
-    "protein": "20g",
-    "benefits": ["Вегетарианско", "Без глутен", "Кето", "Високо протеиново"],
-    "ingredients": ["3 яйца", "50г сирене", "50г спанак", "1 ч.л. масло", "сол"],
-    "steps": [
-      "Разбийте яйцата.",
-      "Запържете спанака в масло.",
-      "Добавете яйцата и сиренето.",
-      "Гответе до готовност."
-    ]
-  }
-];
-
-async function seedDatabase() {
-    console.log("Започва добавяне на рецепти...");
-    for (const recipe of newRecipes) {
-        try {
-            await addDoc(collection(db, "recipes"), recipe);
-            console.log(`Успешно добавена: ${recipe.title}`);
-        } catch (error) {
-            console.error("Грешка при добавяне: ", error);
-        }
+window.saveSettings = async function() {
+    const newName = document.getElementById('settings-name').value;
+    try {
+        await updateProfile(currentUser, { displayName: newName });
+        await updateDoc(doc(db, "users", currentUser.uid), { displayName: newName });
+        document.querySelector('.user-name-desktop').innerHTML = `${newName} <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>`;
+        window.closeModal('settings-modal');
+        alert("Промените са запазени успешно!");
+    } catch (e) {
+        alert("Грешка при запазване: " + e.message);
     }
-    console.log("Готово! Изтрий този временен код.");
 }
-// РАЗКОМЕНТИРАЙ ДОЛНИЯ РЕД САМО ЗА 1 СЕКУНДА, ЗА ДА СЕ ИЗПЪЛНИ ФУНКЦИЯТА:
-// seedDatabase();
 
+// Затваряне на модали при клик извън тях
+window.onclick = (e) => { 
+    if (e.target.classList.contains('modal')) e.target.style.display = "none"; 
+}
+
+// ПРОФИЛ ПАДАЩО МЕНЮ
 const profileToggle = document.getElementById('user-profile-toggle');
 const profileDropdown = document.getElementById('profile-dropdown');
 const dropdownLogoutBtn = document.getElementById('dropdown-logout-btn');
 
-// Показване/скриване на менюто при клик върху името/снимката
 if (profileToggle && profileDropdown) {
     profileToggle.addEventListener('click', (event) => {
-        event.stopPropagation(); // Предотвратява затварянето веднага
+        event.stopPropagation();
         profileDropdown.classList.toggle('show');
     });
 }
 
-// Затваряне на менюто, ако кликнеш някъде другаде по екрана
 window.addEventListener('click', (event) => {
     if (profileDropdown && profileDropdown.classList.contains('show')) {
-        if (!profileToggle.contains(event.target)) {
-            profileDropdown.classList.remove('show');
-        }
+        if (!profileToggle.contains(event.target)) profileDropdown.classList.remove('show');
     }
 });
 
-// Логика за бутона "Изход" от падащото меню
 if (dropdownLogoutBtn) {
     dropdownLogoutBtn.addEventListener('click', (event) => {
-        event.preventDefault(); // Спира презареждането на страницата от линка
-
+        event.preventDefault();
         signOut(auth).then(() => {
-            localStorage.removeItem('user');
             window.location.href = "home.html";
         }).catch((error) => {
             alert("Възникна грешка при излизане: " + error.message);
         });
+    });
+}
+
+const ingredientSearchInput = document.getElementById('ingredient-search');
+if (ingredientSearchInput) {
+    ingredientSearchInput.addEventListener('input', (event) => {
+        const searchTerm = event.target.value.toLowerCase().trim();
+        const filteredIngredients = allIngredients.filter(ingredient => 
+            ingredient.toLowerCase().includes(searchTerm)
+        );
+        renderSidebar(filteredIngredients);
     });
 }
