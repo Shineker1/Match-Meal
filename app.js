@@ -377,7 +377,10 @@ window.addEventListener('click', (event) => {
 if (dropdownLogoutBtn) {
     dropdownLogoutBtn.addEventListener('click', (event) => {
         event.preventDefault();
+        
         signOut(auth).then(() => {
+            localStorage.removeItem('user'); 
+            
             window.location.href = "home.html";
         }).catch((error) => {
             alert("Възникна грешка при излизане: " + error.message);

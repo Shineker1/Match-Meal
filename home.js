@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedUser && loginBtn) {
         // Ако има логнат потребител, променяме бутона
         loginBtn.href = 'main.html';
-        loginBtn.innerHTML = 'Към приложението <i class="fa-solid fa-arrow-right"></i>';
+        loginBtn.innerHTML = 'Към приложението&nbsp; <i class="fa-solid fa-arrow-right"></i>';
        
         // Опционално: Променяме и големия бутон в Hero секцията (ако сме на home.html)
         const heroLoginBtn = document.querySelector('.hero-buttons .btn-primary');

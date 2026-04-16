@@ -54,7 +54,11 @@ onAuthStateChanged(auth, (user) => {
 
 // Изход
 document.getElementById('logout-btn').addEventListener('click', () => {
-    signOut(auth).then(() => window.location.href = "login.html");
+    signOut(auth).then(() => {
+        // Добавяме и тук изчистването
+        localStorage.removeItem('user');
+        window.location.href = "login.html";
+    });
 });
 
 // --- СЪСТАВКИ CRUD ---
