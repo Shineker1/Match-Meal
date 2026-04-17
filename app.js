@@ -70,15 +70,14 @@ async function loadDataFromFirebase() {
 }
 
 // --- НАВИГАЦИЯ И ИЗГЛЕДИ ---
-window.switchView = function(viewId) {
-    document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active-view'));
-    document.getElementById(viewId).classList.add('active-view');
+window.switchView = function(event, viewId) {
+    document.querySelectorAll('.app-view').forEach(view => view.style.display = 'none');
+
+    const targetView = document.getElementById(viewId);
+    if (targetView) targetView.style.display = 'block';
 
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     event.currentTarget.classList.add('active');
-    
-    if(viewId === 'planner-view') renderCalendar();
-    if(viewId === 'favorites-view') renderFavorites();
 }
 
 // --- КИЛЕР И ТЪРСЕНЕ ---

@@ -17,9 +17,9 @@
             <a href="home.html" class="logo"> <i class="bx bx-dish"></i> Match & Meal </a>
             
             <div class="app-tabs">
-                <button class="tab-btn active" onclick="switchView('recipes-view')"><i class="fa-solid fa-utensils"></i> Рецепти</button>
-                <button class="tab-btn" onclick="switchView('planner-view')"><i class="fa-regular fa-calendar-days"></i> Планьор</button>
-                <button class="tab-btn" onclick="switchView('favorites-view')"><i class="fa-solid fa-heart"></i> Любими</button>
+                        <button class="tab-btn active" onclick="switchView(event, 'recipes-view')">Рецепти</button>
+                        <button class="tab-btn" onclick="switchView(event, 'planner-view')">Планьор</button>
+                        <button class="tab-btn" onclick="switchView(event, 'favorites-view')">Любими</button>
             </div>
             
             <div class="nav-links">
@@ -30,7 +30,7 @@
                     </span>
                 
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="#" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> Настройки профил</a>
+                        <a href="#" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> Настройки на профил</a>
                         <hr style="margin: 5px 0; border: none; border-top: 1px solid var(--border-color, #eee);">
                         <a href="#" id="dropdown-logout-btn" style="color: #ff4757;"><i class="fa-solid fa-right-from-bracket"></i> Изход</a>
                     </div>

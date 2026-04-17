@@ -67,12 +67,21 @@
                 <textarea id="r-ingredients" class="full-width" rows="3" placeholder="Съставки (разделени със запетая: Яйца, Сирене, Масло)"></textarea>
                 <textarea id="r-steps" class="full-width" rows="3" placeholder="Стъпки (разделени със запетая: Счупи яйцата, Изпържи ги)"></textarea>
             </div>
+                <div class="admin-card">
+                        <h3 style="margin-bottom: 20px;">
+                            <i class="fa-solid fa-users"></i> Управление на потребители
+                        </h3>
+                        <div id="users-list" class="item-list">
+                            <p>Зареждане на списъка...</p>
+                </div>
+            </div>
             
             <button id="add-recipe-btn" class="btn-primary" style="width: 100%;">Добави Рецепта в Базата</button>
 
             <h3 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">Всички рецепти</h3>
             <div class="item-list" id="recipes-list"></div>
         </div>
+        
     </div>
 
     <script type="module" src="admin.js"></script>

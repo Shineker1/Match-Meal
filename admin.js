@@ -147,3 +147,72 @@ window.deleteRecipe = async (id) => {
         loadRecipes();
     }
 };
+
+async function loadUsers() {
+    const usersContainer = document.getElementById('users-list');
+    if (!usersContainer) return;
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        usersContainer.innerHTML = ''; // Изчистваме съобщението за зареждане
+
+        querySnapshot.forEach((docSnap) => {
+            const userData = docSnap.data();
+            const userId = docSnap.id;
+
+            const userRow = document.createElement('div');
+            userRow.className = 'admin-item'; // Използваме твоя съществуващ клас за редове
+            userRow.style.display = 'flex';
+            userRow.style.justifyContent = 'space-between';
+            userRow.style.alignItems = 'center';
+            userRow.style.padding = '10px';
+            userRow.style.borderBottom = '1px solid var(--border-color)';
+
+            userRow.innerHTML = `
+                <div class="user-info">
+                    <strong>${userData.username || 'Потребител'}</strong>
+                    <small style="color: #888;">${userData.email}</small>
+                </div>
+                <button class="delete-user-btn" data-id="${userId}" title="Изтрий акаунт">
+                    <i class="fa-solid fa-user-minus"></i>
+                </button>
+            `;
+            usersContainer.appendChild(userRow);
+        });
+
+        // Добавяме слушатели за бутоните за изтриване
+        document.querySelectorAll('.delete-user-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const uid = e.currentTarget.getAttribute('data-id');
+                deleteUserAccount(uid);
+            });
+        });
+
+    } catch (e) {
+        console.error("Грешка при зареждане на потребители:", e);
+        usersContainer.innerHTML = '<p>Неуспешно зареждане на списъка.</p>';
+    }
+}
+
+// 2. Функция за изтриване
+async function deleteUserAccount(uid) {
+    if (confirm("Сигурни ли сте, че искате да изтриете този потребител от базата данни?")) {
+        try {
+            await deleteDoc(doc(db, "users", uid));
+            alert("Потребителят е изтрит успешно от Firestore!");
+            loadUsers(); // Презареждаме списъка
+        } catch (e) {
+            alert("Грешка при изтриване: " + e.message);
+        }
+    }
+}
+
+// Извикваме loadUsers() в onAuthStateChanged, когато админът е логнат
+onAuthStateChanged(auth, (user) => {
+    if (user && user.email === ADMIN_EMAIL) {
+        loadRecipes();
+        loadUsers(); // <--- Добави това
+    } else {
+        // ... пренасочване ...
+    }
+});
