@@ -1,51 +1,51 @@
 # Match & Meal
 
-Match & Meal is a web application designed to help users discover recipes based on the ingredients they have available and plan their weekly meals.
+Match & Meal е уеб приложение, създадено да помага на потребителите да откриват рецепти въз основа на продуктите, с които разполагат, и да планират седмичното си меню.
 
-## Key Features
+## Основни функции
 
-* Ingredient Search: Filtering of recipes based on the products selected by the user.
-* Dietary Filters: Options to filter by tags such as Vegan, Vegetarian, Gluten-Free, and High Protein.
-* Weekly Planner: Organizing meals (breakfast, lunch, dinner) for each day of the week.
-* Favorite Recipes: Saving preferred dishes to a personal list.
-* Admin Panel: Content management for adding or deleting ingredients and recipes, as well as managing user accounts.
-* Responsive Design: Modern UI adapted for different devices and screen sizes.
+* Търсене по съставки: Филтриране на рецепти въз основа на продуктите, избрани от потребителя.
+* Диетични филтри: Опции за филтриране по тагове като Веган, Вегетарианско, Без глутен и Високо протеиново.
+* Седмичен планьор: Организиране на храненията (закуска, обяд, вечеря) за всеки ден от седмицата.
+* Любими рецепти: Запазване на предпочитани ястия в личен списък.
+* Админ панел: Управление на съдържанието за добавяне или изтриване на съставки и рецепти, както и управление на потребителски акаунти.
+* Адаптиран дизайн: Модерен потребителски интерфейс, адаптиран за различни устройства и размери на екрана.
 
-## Technologies Used
+## Използвани технологии
 
 * Frontend: HTML5, CSS3 (Custom Variables, Flexbox, Grid), JavaScript (ES6 Modules).
 * Backend: Firebase (Authentication, Firestore Database).
-* Icons and Fonts: FontAwesome, Boxicons, Google Fonts (Nunito).
+* Икони и шрифтове: FontAwesome, Boxicons, Google Fonts (Nunito).
 
-## Setup Instructions
+## Инструкции за инсталация
 
-Since the application uses ES6 modules, it must be run through a local server.
+Тъй като приложението използва ES6 модули, то трябва да се стартира чрез локален сървър.
 
-1. Clone the repository:
+1. Клонирайте хранилището:
    git clone https://github.com/your-username/match-n-meal.git
 
-2. Configure Firebase:
-   - Create a file named config.js in the root directory.
-   - Add your Firebase configuration keys into this file.
-   - Ensure config.js is added to your .gitignore to prevent keys from being pushed to public repositories.
+2. Конфигурирайте Firebase:
+   - Създайте файл с име config.js в основната папка.
+   - Добавете вашите конфигурационни ключове за Firebase в този файл.
+   - Уверете се, че config.js е добавен във вашия .gitignore файл, за да предотвратите качването на ключовете в публични хранилища.
 
-3. Start a server:
-   - If using VS Code, install the Live Server extension.
-   - Right-click home.html and select Open with Live Server.
+3. Стартирайте сървър:
+   - Ако използвате VS Code, инсталирайте разширението Live Server.
+   - Кликнете с десен бутон върху home.html и изберете Open with Live Server.
 
-## Database Structure
+## Структура на базата данни
 
-The application uses Cloud Firestore with the following hierarchy:
-* recipes: Documents containing title, ingredients, steps, and nutritional values.
-* ingredients: A list of all available products for filtering.
-* users: Information about users, their favorite recipes, and their weekly plan.
+Приложението използва Cloud Firestore със следната йерархия:
+* recipes: Документи, съдържащи заглавие, съставки, стъпки и хранителни стойности.
+* ingredients: Списък с всички налични продукти за филтриране.
+* users: Информация за потребителите, техните любими рецепти и седмичния им план.
 
-## Security
+## Сигурност
 
-To protect user data and configuration:
-* Access keys are stored in config.js, which is excluded from version control via .gitignore.
-* Admin Panel access is restricted via email verification in the admin logic.
-* Firestore Security Rules should be configured in the Firebase console to restrict read/write access.
+За защита на потребителските данни и конфигурацията:
+* Ключовете за достъп се съхраняват в config.js, който е изключен от версията на кода чрез .gitignore.
+* Достъпът до админ панела е ограничен чрез проверка на имейл в логиката на администратора.
+* Правилата за сигурност на Firestore трябва да бъдат конфигурирани в конзолата на Firebase, за да се ограничи достъпът за четене/писане.
 
-## Author
-Developed as a project to facilitate healthy eating and reduce food waste.
+## Автор
+Разработено като проект за улесняване на здравословното хранене и намаляване на хранителните отпадъци.
