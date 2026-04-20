@@ -75,6 +75,26 @@
                             <p>Зареждане на списъка...</p>
                 </div>
             </div>
+                <div id="edit-user-modal" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);">
+                    <div class="modal-content" style="background-color: var(--card-bg); margin: 10% auto; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; position: relative;">
+                        <span class="close-modal" onclick="document.getElementById('edit-user-modal').style.display='none'" style="position: absolute; right: 20px; top: 15px; cursor: pointer; font-size: 1.5rem; color: var(--text-dark);">&times;</span>
+                        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-user-pen"></i> Редактирай Потребител</h3>
+                        
+                        <input type="hidden" id="edit-user-id">
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Име / Потребител</label>
+                            <input type="text" id="edit-user-name" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-dark);">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Имейл (само за преглед)</label>
+                            <input type="email" id="edit-user-email" readonly style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid var(--border-color); background: #eee; color: #888; cursor: not-allowed;" title="Имейлът се управлява от Firebase Auth и не може да се променя тук.">
+                        </div>
+                        
+                        <button class="btn-primary" id="save-user-btn" style="width: 100%;">Запази промените</button>
+                    </div>
+                </div>
             
             <button id="add-recipe-btn" class="btn-primary" style="width: 100%;">Добави Рецепта в Базата</button>
 

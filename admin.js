@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCteeftXledZI9is3jftXRAiHv10yd48Mo",
@@ -154,14 +154,17 @@ async function loadUsers() {
 
     try {
         const querySnapshot = await getDocs(collection(db, "users"));
-        usersContainer.innerHTML = ''; // Изчистваме съобщението за зареждане
+        usersContainer.innerHTML = ''; 
 
         querySnapshot.forEach((docSnap) => {
             const userData = docSnap.data();
             const userId = docSnap.id;
+            
+            // Взимаме името: ако няма username, проверяваме displayName, ако не - 'Потребител'
+            const currentName = userData.username || userData.displayName || 'Потребител';
 
             const userRow = document.createElement('div');
-            userRow.className = 'admin-item'; // Използваме твоя съществуващ клас за редове
+            userRow.className = 'admin-item'; 
             userRow.style.display = 'flex';
             userRow.style.justifyContent = 'space-between';
             userRow.style.alignItems = 'center';
@@ -170,21 +173,37 @@ async function loadUsers() {
 
             userRow.innerHTML = `
                 <div class="user-info">
-                    <strong>${userData.username || 'Потребител'}</strong>
-                    <small style="color: #888;">${userData.email}</small>
+                    <strong>${currentName}</strong>
+                    <br><small style="color: #888;">${userData.email}</small>
                 </div>
-                <button class="delete-user-btn" data-id="${userId}" title="Изтрий акаунт">
-                    <i class="fa-solid fa-user-minus"></i>
-                </button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="edit-user-btn" data-id="${userId}" data-name="${currentName}" data-email="${userData.email}" title="Редактирай" style="background: #eccc68; color: #333; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="delete-user-btn" data-id="${userId}" title="Изтрий акаунт" style="background: #ff4757; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;">
+                        <i class="fa-solid fa-user-minus"></i>
+                    </button>
+                </div>
             `;
             usersContainer.appendChild(userRow);
         });
 
-        // Добавяме слушатели за бутоните за изтриване
+        // Слушатели за изтриване
         document.querySelectorAll('.delete-user-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const uid = e.currentTarget.getAttribute('data-id');
                 deleteUserAccount(uid);
+            });
+        });
+
+        // Слушатели за редактиране
+        document.querySelectorAll('.edit-user-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget;
+                document.getElementById('edit-user-id').value = target.getAttribute('data-id');
+                document.getElementById('edit-user-name').value = target.getAttribute('data-name');
+                document.getElementById('edit-user-email').value = target.getAttribute('data-email');
+                document.getElementById('edit-user-modal').style.display = 'block';
             });
         });
 
@@ -193,6 +212,31 @@ async function loadUsers() {
         usersContainer.innerHTML = '<p>Неуспешно зареждане на списъка.</p>';
     }
 }
+
+// Слушател за запазване на редактиран потребител
+document.getElementById('save-user-btn')?.addEventListener('click', async () => {
+    const uid = document.getElementById('edit-user-id').value;
+    const newName = document.getElementById('edit-user-name').value.trim();
+
+    if (!newName) {
+        alert("Името не може да бъде празно.");
+        return;
+    }
+
+    try {
+        // Обновяваме документа на потребителя във Firestore
+        await updateDoc(doc(db, "users", uid), {
+            username: newName,
+            displayName: newName // Обновяваме и двете полета за сигурност, зависи кое ползваш основно
+        });
+        
+        alert("Данните са обновени успешно!");
+        document.getElementById('edit-user-modal').style.display = 'none';
+        loadUsers(); // Презареждаме списъка
+    } catch (e) {
+        alert("Грешка при обновяване: " + e.message);
+    }
+});
 
 // 2. Функция за изтриване
 async function deleteUserAccount(uid) {

@@ -38,12 +38,15 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         if(user.email === "admin@matchnmeal.com"){
-             const adminBtn = document.createElement('a');
+           const adminBtn = document.createElement('a');
              adminBtn.href = "admin.html";
-             adminBtn.className = "btn-secondary";
-             adminBtn.style.marginLeft = "15px";
-             adminBtn.innerText = "Админ Панел";
-             document.querySelector('.user-profile').appendChild(adminBtn);
+             adminBtn.id = "admin-btn";
+             adminBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Админ Панел';
+             
+             const dropdown = document.querySelector('.profile-dropdown');
+             if (dropdown) {
+                 dropdown.insertBefore(adminBtn, dropdown.firstChild);
+             }
         }
 
         loadDataFromFirebase();
